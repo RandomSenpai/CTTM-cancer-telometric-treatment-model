@@ -6,6 +6,7 @@ time_steps = 200
 # initial conditions
 N = np.zeros(time_steps)
 L = np.zeros(time_steps)
+D = drug_dosage(t)
 
 N[0] = 1000 # initial amount of cancer cells at (0,0)
 L[0]= 10.0 # telomere length at (0,0)
@@ -25,7 +26,7 @@ for t in range(1, time_steps):
   L[t] = L[t-1] - shortening + repair * T * (1-D)
   # growth rules
   if L[t] > L_min:
-    N[t] = N[t-1] * growth_rate
+    N[t] = N[t-1] * np.exp(r(L[t]))
   else:
     N[t] = N[t-1] * 0.9 # natural decline due to senescence
 
@@ -39,4 +40,17 @@ plt.show()
 
 plt.figure()
 plt.plot(L, label="Average Telomere Length")
-plt.axhline(L_min, linestyle
+plt.axhline(L_min, linestyle='--', label="Senescence Threshold")
+plt.legend()
+plt.show()
+
+# telomerase-targeting therapy
+def drug_dosage(t):
+  return 0.6 if t > 50 else 0.0
+
+r0 = 0.25 # max intrinsic growth rate
+
+def r(L):
+  if L <= L_min:
+    return 0
+  return r0 * (L-L_min) / (L0 -L_min)
