@@ -1,14 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-# telomerase-targeting therapy
-def drug_dosage(t):
-  return 0.6 if t > 50 else 0.0
-def growth_rate(L):
-  if L <= L_min:
-    return 0
-  return r0 * (L-L_min) / (L0 - L_min)
-
 
 time_steps = 200
 
@@ -27,6 +19,14 @@ T = 0.9 # telomerase activity
 L_min = 5.0 # senescence threshold
 growth_rate = 1.1
 r0 = 0.25
+
+# telomerase-targeting therapy
+def drug_dosage(t):
+  return 0.6 if t > 50 else 0.0
+def growth_rate(L):
+  if L <= L_min:
+    return 0
+  return r0 * (L-L_min) / (L0 - L_min)
 
 # time evolution loop
 for t in range(1, time_steps):
@@ -54,4 +54,3 @@ plt.axhline(L_min, linestyle='--', label="Senescence Threshold")
 plt.legend()
 plt.show()
 
-r0 = 0.25 # max intrinsic growth rate
