@@ -37,6 +37,7 @@ for t in range(1, time_steps):
     # update telomere length (only if dividing)
     L[t] = L[t-1] - shortening + repair * T * (1-D)
     L[t] = min(L[t], L0) # cap telomere length
+    N[t] = N[t-1] * (1+growth_rate(L[t])) # update function cancer population
     # exponential growth with telomere constraint
 
 
